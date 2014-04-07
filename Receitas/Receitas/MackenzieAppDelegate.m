@@ -13,6 +13,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSFileManager *fileManager = [ [NSFileManager alloc ]init];
+    NSArray *urls = [fileManager URLsForDirectory:
+                    NSDocumentDirectory inDomains:NSUserDomainMask] ;
+    for ( int i = 0; i < [ urls count ] ; i++ ) {
+        NSLog(@"%@" , urls [i] ) ;
+    }
+    
+    NSString *caminho = [NSTemporaryDirectory( )
+                        stringByAppendingPathComponent:@"MeuArquivo.txt"];
+    NSArray *nomes = @[@"Paz" , @"Amor" ];
+    BOOL resultado = [nomes writeToFile:caminho atomically :YES];
+    NSArray *leitura = [[NSArray alloc]initWithContentsOfFile:
+                        caminho] ;
+    if([ leitura count] != [nomes count ] ) NSLog(@"Falha de leitu ra") ;
+    if(! resultado ){ NSLog(@"Falha de escrita");
+    }
+    
     ReceitaViewController *viewController = [[ReceitaViewController alloc]
                                             initWithNibName:nil
                                             bundle:nil];
@@ -25,7 +42,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
+    
+    
 }
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
